@@ -1,9 +1,26 @@
 import Posts from "../models/posts.js";
+import Categories from "../models/categories.js";
+import '../models/associate.js';
 
 const getPosts = async (req, res) => {
     try {
-        const response = await Posts.findAll();
-        res.status(200).json(response);
+        const response = await Posts.findAll({
+            include: [{
+                model: Categories,
+                attributes: ['name'],
+            }]
+        });
+
+        const modifiedResponse = response.map(post => ({
+            title: post.title,
+            category: post.category.name,
+            body: post.body,
+            image_url: post.image_url,
+            news_date: post.news_date,
+            created_at: post.createdAt,
+            updated_at: post.updatedAt
+        }));
+        res.status(200).json(modifiedResponse);
     } catch (error) {
         res.status(500).json({error: error.message});
     }

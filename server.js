@@ -3,7 +3,6 @@ import cors from "cors";
 import sequelize from "./config/db.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
-import './models/associate.js';
 
 
 const app = express();
